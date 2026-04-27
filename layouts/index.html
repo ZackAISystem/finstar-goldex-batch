@@ -1,5 +1,13 @@
+cd ~/zack-ai/zack-factory/finstar-goldex
+
+cat > layouts/index.html <<'EOF'
 {{ define "main" }}
   {{ $slug := .Params.slug }}
+
+  {{ if not $slug }}
+    {{ $slug = "50pribyli" }}
+  {{ end }}
+
   {{ $site := index site.Data.sites $slug }}
 
   {{ if not $site }}
@@ -16,3 +24,4 @@
   {{ partial "lead-modal.html" $site }}
   {{ partial "blocks/footer.html" $site }}
 {{ end }}
+EOF

@@ -1346,31 +1346,37 @@ select{
   width: 128px;
   height: 128px;
   border-radius: 28px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 46px 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   box-shadow: 0 12px 34px rgba(15, 23, 42, 0.06);
+}
+
+/* иконка из JSON */
+.how-it-works__icon-img{
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  display: block;
 }
 
 /* фоны */
 .how-it-works__icon--1{
   background-color: #8d6df2;
-  background-image: url("/img/template_1/how-it-works/icon-step-1.png");
 }
 
 .how-it-works__icon--2{
   background-color: #4fc8e8;
-  background-image: url("/img/template_1/how-it-works/icon-step-2.png");
 }
 
 .how-it-works__icon--3{
   background-color: #e5afe5;
-  background-image: url("/img/template_1/how-it-works/icon-step-3.png");
 }
 
 .how-it-works__icon--4{
   background-color: #a9e4bf;
-  background-image: url("/img/template_1/how-it-works/icon-step-4.png");
 }
 
 .how-it-works__item-title{
@@ -1410,7 +1416,7 @@ select{
 
   .how-it-works__grid{
     grid-template-columns: 1fr;
-    gap: 60px; /* было 48px */
+    gap: 60px;
   }
 
   .how-it-works__item{
@@ -1431,7 +1437,11 @@ select{
     width: 104px;
     height: 104px;
     border-radius: 24px;
-    background-size: 38px 38px;
+  }
+
+  .how-it-works__icon-img{
+    width: 38px;
+    height: 38px;
   }
 
   .how-it-works__item-title{
