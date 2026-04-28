@@ -139,12 +139,60 @@ document.addEventListener("keydown",(e)=>{
 
 const form = modal.querySelector("#leadForm");
 
-form.addEventListener("submit",(e)=>{
+form.addEventListener("submit", async (e)=>{
   e.preventDefault();
 
-  // тут потом CRM webhook
+  const submitBtn = modal.querySelector("#leadSubmit");
+  const oldText = submitBtn.textContent;
 
-  closeModal();
+  const formData = new FormData(form);
+
+  const payload = {
+    name: formData.get("name") || "",
+    phone: formData.get("phone") || "",
+    message: formData.get("message") || "",
+    cta_source: hiddenSource.value || "",
+    cta_text: hiddenText.value || "",
+    page_url: window.location.href
+  };
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Отправляем...";
+
+  try {
+    const response = await fetch("/api/lead", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.ok) {
+      throw new Error(result.error || "Ошибка отправки");
+    }
+
+    submitBtn.textContent = "Заявка отправлена";
+    form.reset();
+
+    setTimeout(() => {
+      closeModal();
+      submitBtn.disabled = false;
+      submitBtn.textContent = oldText;
+    }, 900);
+
+  } catch (error) {
+    console.error(error);
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Ошибка. Попробуйте ещё раз";
+
+    setTimeout(() => {
+      submitBtn.textContent = oldText;
+    }, 1800);
+  }
 });
 
 })();
