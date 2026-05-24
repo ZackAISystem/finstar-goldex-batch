@@ -33,22 +33,22 @@
         </div>
       {{ else }}
 
-        {{ range $tpl.blocks }}
-          {{ $b := (printf "%v" .) | strings.TrimSpace }}
-          {{ if and $b (ne $b "<nil>") }}
-            {{ partial (printf "blocks/%s.html" $b) $site }}
-          {{ else }}
-            <div class="container" style="padding:20px">
-              <pre style="padding:12px;background:#fff7cc;border:1px solid #f2c200;border-radius:10px;white-space:pre-wrap">
+        <div class="site-root tpl-{{ $tplName }}">
+          {{ range $tpl.blocks }}
+            {{ $b := (printf "%v" .) | strings.TrimSpace }}
+            {{ if and $b (ne $b "<nil>") }}
+              {{ partial (printf "blocks/%s.html" $b) $site }}
+            {{ else }}
+              <div class="container" style="padding:20px">
+                <pre style="padding:12px;background:#fff7cc;border:1px solid #f2c200;border-radius:10px;white-space:pre-wrap">
 WARN: empty block name in template {{ $tplName }} (data/templates/{{ $tplName }}.json)
-              </pre>
-            </div>
+                </pre>
+              </div>
+            {{ end }}
           {{ end }}
-        {{ end }}
 
-        {{/* ✅ ОДИН РАЗ НА СТРАНИЦУ: модалка заявки
-              ВАЖНО: передаём $site (JSON), а не страницу . */}}
-        {{ partial "lead-modal.html" $site }}
+          {{ partial "lead-modal.html" $site }}
+        </div>
 
       {{ end }}
     {{ end }}

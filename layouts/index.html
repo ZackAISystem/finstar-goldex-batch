@@ -11,13 +11,17 @@
     {{ errorf "Site data not found for slug: %s" $slug }}
   {{ end }}
 
-  {{ partial "blocks/header.html" $site }}
-  {{ partial "blocks/hero.html" $site }}
-  {{ partial "blocks/why_us.html" $site }}
-  {{ partial "blocks/how_it_works.html" $site }}
-  {{ partial "blocks/use_cases.html" $site }}
-  {{ partial "blocks/trust.html" $site }}
-  {{ partial "blocks/contact_form.html" $site }}
-  {{ partial "lead-modal.html" $site }}
-  {{ partial "blocks/footer.html" $site }}
+  {{ $template := default "template_1" $site.template }}
+
+  <div class="site-root tpl-{{ $template }}">
+    {{ partial "blocks/header.html" $site }}
+    {{ partial "blocks/hero.html" $site }}
+    {{ partial "blocks/why_us.html" $site }}
+    {{ partial "blocks/how_it_works.html" $site }}
+    {{ partial "blocks/use_cases.html" $site }}
+    {{ partial "blocks/trust.html" $site }}
+    {{ partial "blocks/contact_form.html" $site }}
+    {{ partial "lead-modal.html" $site }}
+    {{ partial "blocks/footer.html" $site }}
+  </div>
 {{ end }}
