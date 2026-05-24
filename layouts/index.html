@@ -11,17 +11,27 @@
     {{ errorf "Site data not found for slug: %s" $slug }}
   {{ end }}
 
-  {{ $template := default "template_1" $site.template }}
+  {{ $tplName := (printf "%v" (.Params.template | default $site.template_auto | default $site.template | default "template_1")) | strings.TrimSpace }}
+  {{ $tpl := index site.Data.templates $tplName }}
 
-  <div class="site-root tpl-{{ $template }}">
-    {{ partial "blocks/header.html" $site }}
-    {{ partial "blocks/hero.html" $site }}
-    {{ partial "blocks/why_us.html" $site }}
-    {{ partial "blocks/how_it_works.html" $site }}
-    {{ partial "blocks/use_cases.html" $site }}
-    {{ partial "blocks/trust.html" $site }}
-    {{ partial "blocks/contact_form.html" $site }}
+  {{ if not $tpl }}
+    {{ errorf "Template not found: data/templates/%s.json" $tplName }}
+  {{ end }}
+
+  <div class="site-root tpl-{{ $tplName }}">
+    {{ range $tpl.blocks }}
+      {{ $b := (printf "%v" .) | strings.TrimSpace }}
+      {{ if and $b (ne $b "<nil>") }}
+        {{ partial (printf "blocks/%s.html" $b) $site }}
+      {{ else }}
+        <div class="container" style="padding:20px">
+          <pre style="padding:12px;background:#fff7cc;border:1px solid #f2c200;border-radius:10px;white-space:pre-wrap">
+WARN: empty block name in template {{ $tplName }} (data/templates/{{ $tplName }}.json)
+          </pre>
+        </div>
+      {{ end }}
+    {{ end }}
+
     {{ partial "lead-modal.html" $site }}
-    {{ partial "blocks/footer.html" $site }}
   </div>
 {{ end }}
