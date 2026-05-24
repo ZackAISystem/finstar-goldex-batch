@@ -91,11 +91,43 @@ function closeModal(){
   document.body.classList.remove("is-modal-open");
 }
 
+function getModalCtaColor(btn){
+
+  // 1) Если клик из contact_form — берём цвет панели, а не белой кнопки
+  const contactPanel = btn.closest(".contact-form__panel");
+  if (contactPanel) {
+    const panelColor = window.getComputedStyle(contactPanel).backgroundColor;
+    if (
+      panelColor &&
+      panelColor !== "rgba(0, 0, 0, 0)" &&
+      panelColor !== "transparent"
+    ) {
+      return panelColor;
+    }
+  }
+
+  // 2) Для hero / why_us / других CTA берём фактический цвет самой кнопки из CSS
+  const btnColor = window.getComputedStyle(btn).backgroundColor;
+  if (
+    btnColor &&
+    btnColor !== "rgba(0, 0, 0, 0)" &&
+    btnColor !== "transparent"
+  ) {
+    return btnColor;
+  }
+
+  // 3) Fallback, если где-то цвет задан вручную через data-cta-color
+  const explicitColor = btn.getAttribute("data-cta-color");
+  if (explicitColor) return explicitColor;
+
+  return "";
+}
+
 function openModal(btn){
 
   const ctaText = (btn.getAttribute("data-cta-text") || btn.textContent || "").trim();
   const ctaTitle = btn.getAttribute("data-modal-title");
-  const ctaColor = btn.getAttribute("data-cta-color");
+  const ctaColor = getModalCtaColor(btn);
   const ctaSource = btn.getAttribute("data-source");
 
   if (ctaTitle) titleEl.textContent = ctaTitle;
